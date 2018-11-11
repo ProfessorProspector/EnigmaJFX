@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cuchaz.enigma.Enigma">
+    <top>
+        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="openJarMenu" mnemonicParsing="false" onAction="#openJar" text="Open Jar..." />
+                        <MenuItem fx:id="closeJarMenu" mnemonicParsing="false" onAction="#closeJar" text="Close Jar" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <Menu fx:id="openMappingsMenu" mnemonicParsing="false" text="Open Mappings">
+                            <items>
+                                <MenuItem fx:id="openEnigmaMappingsMenu" mnemonicParsing="false" onAction="#openEnigmaMappings" text="Enigma..." />
+                                <MenuItem fx:id="openTinyMappingsMenu" mnemonicParsing="false" onAction="#openTinyMappings" text="Tiny..." />
+                            </items>
+                        </Menu>
+                        <MenuItem fx:id="saveMappingsMenu" mnemonicParsing="false" onAction="#saveMappings" text="Save Mappings">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+                        <Menu fx:id="saveMappingsAsMenu" mnemonicParsing="false" text="Save Mappings As">
+                            <items>
+                                <MenuItem fx:id="saveMappingsAsEngimaSingleMenu" mnemonicParsing="false" onAction="#saveEnigmaMappingsAs" text="Enigma (single file)..." />
+                                <MenuItem fx:id="saveMappingsAsEnigmaDirectoryMenu" mnemonicParsing="false" onAction="#saveEnigmaMappingsAsDirectory" text="Enigma (directory)..." />
+                                <MenuItem fx:id="saveMappingsAsSRGMenu" mnemonicParsing="false" onAction="#saveSRGMappingsAs" text="SRG (single file)..." />
+                            </items>
+                        </Menu>
+                        <MenuItem fx:id="closeMappingsMenu" mnemonicParsing="false" onAction="#closeMappings" text="Close Mappings" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="rebuildMethodNamesMenu" mnemonicParsing="false" onAction="#rebuildMethodNames" text="Rebuild Method Names" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="exportSourceMenu" mnemonicParsing="false" onAction="#exportSource" text="Export Source..." />
+                        <MenuItem fx:id="exportJarMenu" mnemonicParsing="false" onAction="#exportJar" text="Export Jar..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="exitMenu" mnemonicParsing="false" onAction="#exit" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu fx:id="viewMenu" mnemonicParsing="false" text="View">
+                    <items>
+                        <Menu fx:id="themesMenu" mnemonicParsing="false" text="Themes">
+                            <items>
+                                <MenuItem fx:id="darkThemeMenu" mnemonicParsing="false" text="Dark" />
+                                <MenuItem fx:id="lightThemeMenu" mnemonicParsing="false" text="Light" />
+                                <SeparatorMenuItem mnemonicParsing="false" />
+                                <MenuItem fx:id="addThemeMenu" mnemonicParsing="false" onAction="#addTheme" text="Add Theme..." />
+                            </items>
+                        </Menu>
+                        <MenuItem fx:id="bytecodeButton" mnemonicParsing="false" text="Bytecode" />
+                    </items>
+                </Menu>
+                <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="aboutMenu" mnemonicParsing="false" onAction="#about" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" BorderPane.alignment="CENTER">
+            <items>
+                <VBox alignment="TOP_CENTER">
+                    <children>
+                        <HBox id="search-hbox" alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
+                            <children>
+                                <ImageView fx:id="searchIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <effect>
+                                        <ColorAdjust brightness="0.71" />
+                                    </effect>
+                                    <HBox.margin>
+                                        <Insets left="4.0" />
+                                    </HBox.margin>
+                                    <image>
+                                        <Image url="@/assets/icons/search.png" />
+                                    </image>
+                                </ImageView>
+                                <TextField fx:id="searchBox" HBox.hgrow="ALWAYS" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="1.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <TabPane fx:id="treesPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                            <tabs>
+                                <Tab fx:id="classesTab" style="-fx-font-size: 11;" text="Class Tree">
+                                    <content>
+                                        <TreeView fx:id="classTree" showRoot="false" />
+                                    </content>
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@icons/code.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Tab>
+                                <Tab fx:id="recentTab" disable="true" style="-fx-font-size: 11;" text="Recents">
+                                    <content>
+                                        <TreeView fx:id="recentsTree" />
+                                    </content>
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@icons/history.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Tab>
+                                <Tab fx:id="inheritanceTab" disable="true" style="-fx-font-size: 11;" text="Inheritance">
+                                    <content>
+                                        <TreeView fx:id="inheritanceTree" />
+                                    </content>
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@icons/tree.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Tab>
+                                <Tab fx:id="implTab" disable="true" style="-fx-font-size: 11;" text="Implementations">
+                                    <content>
+                                        <TreeView fx:id="implTree" />
+                                    </content>
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@icons/blueprint.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Tab>
+                                <Tab fx:id="callGraphTab" disable="true" style="-fx-font-size: 11;" text="Call Graph">
+                                    <content>
+                                        <TreeView fx:id="callGraphTree" />
+                                    </content>
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@icons/call.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Tab>
+                            </tabs>
+                            <VBox.margin>
+                                <Insets left="-5.0" />
+                            </VBox.margin>
+                        </TabPane>
+                    </children>
+                </VBox>
+                <VBox fx:id="centerBox" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <TabPane fx:id="editorTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" />
+                        <VBox alignment="TOP_CENTER">
+                            <children>
+                                <Text id="bold-text" fx:id="identifierInfo" strokeType="OUTSIDE" strokeWidth="0.0" text="IDENTIFIER INFO" />
+                                <VBox fx:id="identifierInfoBox" alignment="TOP_CENTER">
+                                    <children>
+                                        <Text id="text" strokeType="OUTSIDE" strokeWidth="0.0" text="Class: package/name/and/stuff/Class" />
+                                        <HBox alignment="CENTER">
+                                            <children>
+                                                <Text id="text" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifier:">
+                                                    <HBox.margin>
+                                                        <Insets right="4.0" />
+                                                    </HBox.margin>
+                                                </Text>
+                                                <ChoiceBox prefHeight="25.0" prefWidth="115.0" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                            </VBox.margin>
+                        </VBox>
+                    </children>
+                </VBox>
+            </items>
+            <BorderPane.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </BorderPane.margin>
+        </SplitPane>
+    </center>
+</BorderPane>
